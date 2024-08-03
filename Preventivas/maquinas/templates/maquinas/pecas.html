@@ -1,0 +1,89 @@
+{% extends 'maquinas/nav.html' %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEÇAS USADAS</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pecas.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <h2>Peças usadas na ultima preventiva</h2>
+    
+    <h3>Máquina: {{Id_pecas.frota}} - {{Id_pecas.OS}}</h3>
+
+    <ul class="itens">
+
+        {% for peca in pecas_usadas %}
+
+        <li>
+            {{peca.nome}}: <span class="ultimo_horimetro">{{ultimo_horimetro}}</span> / 
+            <span class="prox_prev">{{prox_prev}}</span>
+            
+        
+            <div class="borda">
+                <div class="barra"></div> 
+            </div>
+        </li>
+        <hr>        
+        {% empty %}
+        <p>NENHUMA PEÇA CADASTRADA NESSA PREVENTIVA</p>
+        {% endfor %} 
+    </ul>
+
+ 
+</body>
+</html>
+
+<script>
+
+    // var itens = window.document.querySelector('.itens')
+
+    var ultimoHorimetro = window.document.querySelectorAll('.ultimo_horimetro')
+    var proxPrev = window.document.querySelectorAll('.prox_prev')
+    var barra = window.document.querySelectorAll('.barra')
+
+
+    ultimoHorimetro.forEach((ultHr, index) =>{
+        var proxPreventiva = proxPrev[index]
+        var barrinha = barra[index]
+
+        if(proxPreventiva && barrinha){
+            var valor1 = parseInt(ultHr.textContent, 10)
+            var valor2 = parseInt(proxPreventiva.textContent, 10)
+
+            var metade = 50
+            var terco = 33.33
+
+            var diferenca = valor2 - valor1
+            var porcentagem = Math.abs(diferenca) / 500 * 100
+            
+            barrinha.style.minWidth = '10px'
+            //barrinha.style.maxWidth = '1500px'
+            barrinha.style.width = porcentagem + '%'
+            if(diferenca <= 100){
+                barrinha.style.backgroundColor = 'red'
+            }else if(diferenca <= 250){
+                barrinha.style.backgroundColor = 'yellow'
+            }
+          
+
+        }
+
+    })
+
+
+
+
+
+</script>
+
+{% endblock content %}
