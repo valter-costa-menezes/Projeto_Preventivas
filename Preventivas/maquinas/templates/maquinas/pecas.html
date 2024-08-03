@@ -1,0 +1,97 @@
+{% extends 'maquinas/nav.html' %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEÇAS USADAS</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pecas.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <h2>Peças usadas na ultima preventiva</h2>
+    
+    <h3>Máquina: {{Id_pecas.frota}} - {{Id_pecas.OS}}</h3>
+
+    <ul class="itens">
+
+        {% for peca in pecas_usadas %}
+
+        <li>
+            {{peca.nome}}: <span class="ultimo_horimetro">{{ultimo_horimetro}}</span> / 
+            <span class="prox_prev">{{prox_prev}}</span>
+            
+        
+            <div class="borda">
+                <div class="barra"></div> 
+            </div>
+        </li>
+        <hr>        
+        {% empty %}
+        <p>NENHUMA PEÇA CADASTRADA NESSA PREVENTIVA</p>
+        {% endfor %} 
+    </ul>
+
+ 
+</body>
+</html>
+
+<script>
+    // DEFINE AS VARIAVEIS PEGANDO OS VALORES DOS CAMPOS
+    var ultimoHorimetro = window.document.querySelectorAll('.ultimo_horimetro')
+    var proxPrev = window.document.querySelectorAll('.prox_prev')
+    var barra = window.document.querySelectorAll('.barra')
+
+    // FAZ A ITERAÇÃO PARA TODOS OS ITENS DO ARRAY
+    ultimoHorimetro.forEach((ultHr, index) =>{
+        // proxPreventiva CONTEM OS VALORES DA PROXIMA PREVENTIVA 
+        var proxPreventiva = proxPrev[index]
+        
+        // CONTÉM O VALOR DA BARRA NO
+        var barrinha = barra[index]
+
+        // VERIFICA SE proxPreventiva barrinha EXISTEM
+        if(proxPreventiva && barrinha){
+
+            // PEGA OS VALORES DE ultHr proxPreventiva E CONVERTE PARA NUMEROS INTEIROS
+            var valor1 = parseInt(ultHr.textContent)
+            var valor2 = parseInt(proxPreventiva.textContent)
+
+            // CALCULA A DIFERENÇA DOS VALORES 
+            var diferenca = valor2 - valor1
+
+            // CONVERTE A DIFERENÇA PARA PORCENTAGEM ONDE 500 É O VALOR MÁXIMO QUE A BARRA CHEGA
+            var porcentagem = Math.abs(diferenca) / 500 * 100
+            
+            // ESTILIZA A BARRA COM LARGURA MINIMA DE 10PX EVITANDO DE SUMIR QUANDO CHEGAR A 0%
+            barrinha.style.minWidth = '10px'
+            barrinha.style.width = porcentagem + '%'
+
+            // SE A BARRA MENOR QUE 100 ENTÃO ELA FICA VERMELHA 
+            if(diferenca <= 100){   
+                barrinha.style.backgroundColor = 'red'
+
+            // SE A BARRA MENOR OU IGUAL A 250 ENTÃO ELA FICA AMARELA
+            }else if(diferenca <= 250){
+                barrinha.style.backgroundColor = 'yellow'
+            }
+          
+
+        }
+
+    })
+
+
+
+
+
+</script>
+
+{% endblock content %}

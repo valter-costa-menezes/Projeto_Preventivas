@@ -1,0 +1,55 @@
+{% extends "maquinas/nav.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPARATIVO</title>
+        <link rel="stylesheet" type="text/css" href="{% static '/css/Comp.css' %}">
+</head>
+<body>
+
+    <div class="centro">
+        <form action="{% url 'CompPrev' %}" method="post" class="formulario">
+            {% csrf_token %}
+            {{form.as_p}}
+    
+            <button name="submit" id="limpar">Comparar</button>
+        </form>
+            <!-- MENSAGEM CASO PRECISE DE PREVENTIVA -->
+        {% if mensagem_prev %}
+        <div class="mensagem">
+            {{ mensagem_prev }}  
+        </div>
+        {% endif %}
+
+
+        <!-- MENSAGEM CASO NÃO PRECISE DE PREVENTIVA -->
+        {% if mensagem_info %}
+        <div class="mensagem">
+            {{ mensagem_info }}
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+    <script>
+        // PEGA OS VALORES DO CAMPO DE INPUT
+        var frota = document.querySelector('#id_frota')
+        var hor = document.querySelector('#id_horimetro')
+
+        // DEFINE UM TEMPO DE 1 SEGUNDO PARA LIMPAR OS CAMPOD DE FROTA E HORIMETRO APÓS CARREGAR A PÁGINA
+        setTimeout(function(){
+            frota.value = ''
+            hor.value = ''
+        }, 1000)
+    </script>
+</html>
+
+{% endblock content %}

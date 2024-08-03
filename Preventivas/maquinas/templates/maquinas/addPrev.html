@@ -1,0 +1,31 @@
+{% extends "maquinas/nav.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar preventiva</title>
+    <link rel="stylesheet" href="{% static 'css/addPrev.css' %}">
+
+</head>
+<body>
+
+    <h1>Adicionar nova preventiva</h1>
+
+    <div class="centro">
+        <form action="{% url 'addPrev' %}" method="post" class="formulario">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button name="submit">Adicionar</button>
+        </form>
+
+    </div>
+
+</body>
+</html>
+{% endblock content %}
